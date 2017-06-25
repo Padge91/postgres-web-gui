@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MMORPG CRUD</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="/js/app.js"></script>
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+</head>
+<body>
+	<div ng-app="crudApp" ng-controller="crud">
+		<button ng-click="getTables()">Load Tables</button>
+		<div ng-repeat="table in tablesList | orderBy:table">
+			<div>
+				<span>{{table}}</span>
+				<i class="fa fa-plus" ng-click="createNewRecord(table);"></i>
+				<i class="fa fa-table" ng-click="listRecords(table);"></i>
+			</div>
+		</div>
+		<div ng-if="newRecordDefinition != null" style="position:fixed;right:0px;width:300px;height:300px;top:0px;overflow:scroll;border:1px solid black;">
+			<div>{{newRecordDefinition.table}}</div>
+			<form ng-model="newObject" ng-init="newObject={}">
+				<div ng-repeat="col in newRecordDefinition.columns">
+					<label>{{col.name}}</label>
+					<input ng-if="col.type=='integer'" type="number" ng-model="newObject[col.name]">
+					<input ng-if="col.type=='character'" type="textbox" ng-model="newObject[col.name]">
+					<input ng-if="col.type=='foreign_key'" type="number" ng-model="newObject[col.name]">
+				</div>
+				<i ng-click="newRecordDefinition = null" class="fa fa-times"></i>
+				<button ng-click="persistObject(newRecordDefinition.table, newObject)">Submit</button>
+			</form>
+		</div>
+		<div ng-if="currentRecord != null" style="position:fixed;right:0px;width:300px;height:300px;top:0px;overflow:scroll;border:1px solid black;">
+			<form ng-model="updatedObject" ng-init="updatedObject={}">
+				<div ng-model="currentTableDef" ng-init="currentTableDef=tableDefinitions[currentTable]">
+				
+				<div ng-repeat="col in tableDefinitions[currentTable]['columns']">
+					<label>{{col.name}}</label>
+					<input ng-if="col.type==='integer'" type="number" ng-model="currentRecord[col.name]">
+					<input ng-if="col.type==='character'" type="textbox" ng-model="currentRecord[col.name]">
+					<input ng-if="col.type==='foreign_key'" type="number" ng-model="currentRecord[col.name]">
+				</div>
+				<button ng-click="updateObject(currentTable, currentRecord.id, currentRecord)">Submit</button>
+				</div>
+			</form>
+		</div>
+		<div style="position:fixed;right:0px;bottom:0px;width:500px;height:300px;overlow:scroll;border:1px solid black;">
+			<div>{{currentTable}}</div>
+			<table>
+			<tr><td ng-repeat="(k,v) in currentTableRecords[0]">{{k}}</td></tr>
+			<tr ng-repeat="record in currentTableRecords">
+				<td ng-repeat="(k,v) in record">{{v}}</td>
+				<td><i ng-click="editRecord(record)" class="fa fa-pencil"></i></td>
+				<td><i ng-click="deleteRecord(record)" class="fa fa-trash"></i></td>
+			</tr>
+			<Table>
+		</div>
+	</div>
+</body>
+</html>
