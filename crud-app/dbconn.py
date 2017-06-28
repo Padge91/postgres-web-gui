@@ -22,13 +22,14 @@ def is_connected():
 #just create a database connection
 def connect_to_db():
         try:
-                host="localhost"
-                port="32772"
-                user="postgres"
+                host="54.200.255.89"
+                port="5432"
+                user="test"
                 db="postgres"
+		password="***REMOVED***"
 
 		global conn
-                conn = psycopg2.connect(host=host, port=port, user=user, database=db)
+                conn = psycopg2.connect(host=host, port=port, user=user, database=db, password=password)
                 return conn
         except Exception as e:
                 raise Exception("Error connecting to database: " + str(e))
