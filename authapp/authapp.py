@@ -210,7 +210,7 @@ def character_login():
 	c = dbconn.execute_query(existing_query, {"id":character_id})
 	query2 = ""
         if len(c) > 0:
-            query2 = "update character_sessions set character_session=%(session)s, session_expire=now()+'1 hour' where character_id=%(character_id)s"
+            query2 = "update character_sessions set character_session=%(character_session)s, session_expire=now()+'1 hour' where character_id=%(character_id)s"
         else:
             query2 = "insert into character_sessions (character_id, character_session, session_expire) values (%(character_id)s, %(character_session)s, now() + '1 hour')"
         
