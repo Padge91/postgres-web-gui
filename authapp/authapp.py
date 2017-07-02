@@ -253,8 +253,8 @@ def login():
         session = generate_session_id()
 
         # already have the session and everything, now supporting processes
-        query = "update accounts set last_login=now() where username=%(username)s"
-        dbconn.execute_action_query(query, fields)
+        #query = "update accounts set last_login=now() where username=%(username)s"
+        #dbconn.execute_action_query(query, fields)
 
         # doing this because I couldnt get na upsert to work
         existing_query = "select * from account_sessions where account_id=%(id)s"
