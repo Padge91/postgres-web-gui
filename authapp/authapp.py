@@ -203,18 +203,18 @@ def character_login():
         if len(char_results) == 0:
             raise Exception("No character found.")
 
-	character_id = char_results[0][1]
-	character_session = generate_session_id()
+        character_id = char_results[0][1]
+        character_session = generate_session_id()
 
-	existing_query = "select * from character_sessions where character_id=%(id)s"
-	c = dbconn.execute_query(existing_query, {"id":character_id})
-	query2 = ""
+        existing_query = "select * from character_sessions where character_id=%(id)s"
+        c = dbconn.execute_query(existing_query, {"id":character_id})
+        query2 = ""
         if len(c) > 0:
             query2 = "update character_sessions set character_session=%(character_session)s, session_expire=now()+'1 hour' where character_id=%(character_id)s"
         else:
             query2 = "insert into character_sessions (character_id, character_session, session_expire) values (%(character_id)s, %(character_session)s, now() + '1 hour')"
         
-	new_fields = {"character_id":character_id, "character_session":str(character_session)}
+        new_fields = {"character_id":character_id, "character_session":str(character_session)}
         dbconn.execute_action_query(query2, new_fields)
 
         # need things the player needs to know about their player
@@ -223,8 +223,8 @@ def character_login():
         character_definition = {"session":str(character_session)}
 
         location_and_rotation = dbconn.execute_query("select position_x, position_y, position_z, quaternion_x, quaternion_y, quaternion_z, quaternion_w from player_characters where id=%(character_id)s", fields)
-	resp = parsing.format_all_responses(["position_x", "position_y", "position_z", "quaternion_x", "quaternion_y", "quaternion_z", "quaternion_w"], location_and_rotation)
-	character_definition["data"] = resp
+        resp = parsing.format_all_responses(["position_x", "position_y", "position_z", "quaternion_x", "quaternion_y", "quaternion_z", "quaternion_w"], location_and_rotation)
+        character_definition["data"] = resp
 
         return organize_success_response(character_definition)
     except Exception as e:
@@ -253,8 +253,8 @@ def login():
         session = generate_session_id()
 
         # already have the session and everything, now supporting processes
-        #query = "update accounts set last_login=now() where username=%(username)s"
-        #dbconn.execute_action_query(query, fields)
+        # query = "update accounts set last_login=now() where username=%(username)s"
+        # dbconn.execute_action_query(query, fields)
 
         # doing this because I couldnt get na upsert to work
         existing_query = "select * from account_sessions where account_id=%(id)s"
