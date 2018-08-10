@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD GUI</title>
+    <script type="text/javascript" src="/static/lib/js/angular.min.js"></script>
+	<script type="text/javascript" src="/static/app/login-form/login-form.module.js"></script>
+	<script type="text/javascript" src="/static/app/login-form/login-form.controller.js"></script>
+	<script type="text/javascript" src="/static/app/login-form/login-form.component.js"></script>
+    <script type="text/javascript" src="/static/app/app.module.js"></script>
+	<link rel="stylesheet" href="/static/lib/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/static/lib/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/lib/css/main.css">
+</head>
+<body>
+	<div ng-app="crudGuiApp">
+		<div ng-controller="mainAppController">
+			<!-- authentication window -->
+			<div ng-if="currentState==loginState">
+				<login-form success-callback="loginSuccessCallback" failure-callback="loginFailureCallback"></login-form>
+			</div>
+			<!-- list tables in db -->
+			<div ng-if="currentState==listState">
+
+			</div>
+			<!-- show actions for selected table -->
+			<div ng-if="currentState==selectState">
+
+			</div>
+			<!-- admin panes -->
+			<div ng-if="currentState==adminState">
+
+			</div>
+
+			<!-- invite user -->
+			<!-- list users -->
+			<!-- list groups -->
+			<!-- modify group permissions -->
+			<!-- modify user -->
+			<!-- modify group members -->
+
+			<!-- list of tables -->
+			<!-- search -->
+			<!-- add a record -->
+			<!-- edit a record -->
+			<!-- delete a record -->
+		</div>
+	</div>
+</body>
+</html>

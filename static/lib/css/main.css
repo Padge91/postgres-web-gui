@@ -1,0 +1,53 @@
+.login_form {
+    margin-top:100px;
+    border-radius:10px;
+    background-color: #DEDEDE;
+    padding-top:30px;
+    padding-bottom:30px;
+}
+
+.provider_branding {
+    text-align:center;
+    background: url('/static/lib/images/database.png') no-repeat;
+    background-size:contain;
+    height:100px;
+    width:100px;
+    text-align:center;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius:90px;
+    border: 3px solid #CDCDCD;
+}
+
+.input_field_style {
+    width: 100%;
+    margin-top:10px;
+    text-align:center;
+}
+
+.input_button_style {
+    width: 100%;
+    margin-top:30px;
+    text-align:center;
+}
+
+.request_access_link {
+    position: absolute;
+    float:left;
+    left:40px;
+    cursor:pointer;
+}
+
+.forgot_password_link {
+    position: absolute;
+    float:right;
+    right:40px;
+    cursor:pointer;
+}
+
+.error_message {
+    padding:20px;
+    margin:20px;
+    border: 1px solid #FF4136;
+    background-color:pink;
+}
