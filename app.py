@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from CrudApp.CrudApp import app as crudapp
-from AuthApp.AuthApp import app as authapp
+from AuthApp.AuthAppEndpoints import app as authapp
 from CommonApp.CommonApp import app as commonapp
 
 app = Flask(__name__)

@@ -30,4 +30,17 @@ foreign_keys_query='''
                 '''
 
 
-delete_row="delete from %(table)s where id=%(id)s"
+delete_row = "delete from %(table)s where id=%(id)s"
+
+
+get_user_password_and_salt = "select password, salt from cbk_users where username=%(username)s"
+
+check_if_user_exists = "select username from cbk_users where username=%(username)s"
+
+insert_session = "update cbk_users set session=%(session)s, session_expire=to_timestamp(%(session_expire)s) where username=%(username)s"
+
+get_list_of_users = "select username from cbk_users"
+
+create_user = "insert into cbk_users(username, password, date_created, date_modified, admin, salt) values (%(username)s, %(password)s, to_timestamp(%(date_created)s), to_timestamp(%(date_created)s), FALSE, %(salt)s)"
+
+
