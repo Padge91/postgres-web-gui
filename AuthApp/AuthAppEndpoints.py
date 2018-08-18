@@ -37,7 +37,7 @@ def login():
 def logout():
     try:
         if config.cookie_name not in request.cookies:
-            return jsonify(success_response(True))
+            raise Exception("No cookie provided.")
 
         session = request.cookies.get(config.cookie_name)
         if session is None or len(session) == 0:
@@ -56,70 +56,87 @@ def logout():
 
 
 @app.route("/groups", methods=["GET", "POST"])
-def groups():
-    if request.method == "POST":
-        # create a group
-        return 0
-    elif request.method == "GET":
-        # get all groups
-        return 0
-    else:
-        return 1
-
-
 @app.route("/groups/<id>", methods=["POST", "DELETE", "GET", "PUT"])
-def groups_with_id(id):
-    if request.method == "POST":
-        # add a user to a group
-        return 0
-    elif request.method == "GET":
-        # get a group
-        return 0
-    elif request.method == "DELETE":
-        # delete a group
-        return 0
-    elif request.method == "PUT":
-        # update a group
-        return 0
-    else:
-        return 1
-
-
-@app.route("/users", methods=["GET", "POST"])
-def users():
+def groups_with_id(id=None):
     try:
-        # create user
         if request.method == "POST":
-            required_fields = ["username", "password", "passwordConfirm"]
-            fields = check_required_fields(request, required_fields)
-            results = AuthApp.create_user(fields["username"], fields["password"], fields["passwordConfirm"], dbconn)
-            return jsonify(success_response(results))
-        # get list of users
+            if id is None:
+                # create a group
+                required_fields = ["groupName"]
+                fields = check_required_fields(request, required_fields)
+                group_id = AuthApp.create_group(fields["groupName"], dbconn)
+                return jsonify(success_response(group_id))
+            else:
+                # add a user to a group
+                required_fields = ["userId"]
+                fields = check_required_fields(request, required_fields)
+                AuthApp.add_user_to_group(id, fields["userId"], dbconn)
+                return jsonify(success_response(True))
         elif request.method == "GET":
-            results = AuthApp.get_list_of_users(dbconn)
-            return jsonify(success_response(results))
+            if id is None:
+                # get all groups
+                results = AuthApp.get_list_of_groups(dbconn)
+                return jsonify(success_response(results))
+            else:
+                # get a specific group
+                results = AuthApp.get_group(id, dbconn)
+                return jsonify(success_response(results))
+        elif request.method == "DELETE":
+            if not request.data:
+                # delete a group
+                AuthApp.delete_group(id, dbconn)
+                return jsonify(success_response(True))
+            else:
+                # delete a group member
+                required_fields = ["userId"]
+                fields = check_required_fields(request, required_fields)
+                AuthApp.remove_user_from_group(id, fields["userId"], dbconn)
+                return jsonify(success_response(True))
+        elif request.method == "PUT":
+            # update a group
+            # change name?
+            # add user?
+            return 0
         else:
             raise Exception("Something went very, very wrong. You should never see this...")
     except Exception as e:
         return jsonify(error_response(e))
 
 
+@app.route("/users", methods=["GET", "POST"])
 @app.route("/users/<id>", methods=["GET", "POST", "DELETE", "PUT"])
-def users_with_id(id):
-    if request.method == "POST":
-        # not sure yet
-        return 0
-    elif request.method == "GET":
-        # get a user
-        return 0
-    elif request.method == "DELETE":
-        # delete a user
-        return 0
-    elif request.method == "PUT":
-        # update a user
-        return 0
-    else:
-        return 1
+def users_with_id(id=None):
+    try:
+        if request.method == "POST":
+            # create a user
+            required_fields = ["username", "password", "passwordConfirm"]
+            fields = check_required_fields(request, required_fields)
+            results = AuthApp.create_user(fields["username"], fields["password"], fields["passwordConfirm"], dbconn)
+            return jsonify(success_response(results))
+        elif request.method == "GET":
+            if id is None:
+                # get all users
+                results = AuthApp.get_list_of_users(dbconn)
+                return jsonify(success_response(results))
+            else:
+                # get a user
+                user = AuthApp.get_user(id, dbconn)
+                return jsonify(success_response(user))
+        elif request.method == "DELETE":
+            # delete a user
+            AuthApp.delete_user(id, dbconn)
+            return jsonify(success_response(True))
+        elif request.method == "PUT":
+            # update password
+            required_fields = ["password", "passwordConfirm"]
+            fields = check_required_fields(request, required_fields)
+            AuthApp.change_user_password(id, fields["password"], fields["passwordConfirm"], dbconn)
+            return jsonify(success_response(True))
+        else:
+            raise Exception("Something went very, very wrong. You should never see this...")
+    except Exception as e:
+        return jsonify(error_response(e))
 
 
+# permissions now
 

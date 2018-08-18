@@ -9,7 +9,7 @@ def check_required_fields(request, required_fields):
     json_data = request.get_json()
 
     for field in required_fields:
-        if field not in json_data.keys():
+        if field not in json_data.keys() or json_data[field] is None or (type(json_data[field]) == "string" and len(json_data[field]) != 0):
             raise Exception("Missing required field: "+str(field))
         else:
             fields[field] = json_data[field]

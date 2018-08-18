@@ -1,6 +1,5 @@
 angular.module("loginForm").controller("loginFormController", ["$scope", "$http", function($scope, $http){
     var $ctrl = $scope.$ctrl;
-    $scope.cookieName = "CBK_CRUD_GUI_ID";
     $scope.errorMessage = null;
 
     $scope.login = function(credentials){
@@ -31,8 +30,6 @@ angular.module("loginForm").controller("loginFormController", ["$scope", "$http"
 
     $scope.loginSuccess = function(username, session){
         var successData = {"username":username, "session":session}
-
-        $scope.setCookie($scope.cookieName, session);
 
         if ($ctrl.successCallback){
             $ctrl.successCallback(successData)
