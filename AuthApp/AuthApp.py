@@ -123,6 +123,36 @@ def get_group_members(id, dbconn):
     return members
 
 
+def get_group_permissions(id, dbconn):
+    results = dbconn.execute_query(queries.get_group_permissions, {"id": id})
+    if len(results) == 0:
+        return []
+
+    permissions = {}
+    for record in results:
+        object_name = record[0].strip()
+        permission = record[1].strip()
+        if object_name not in permissions.keys():
+            permissions[object_name] = [permission]
+        else:
+            permissions[object_name].append(permission)
+
+    for k in permissions.keys():
+        permissions[k] = list(set(permissions[k]))
+
+    return permissions
+
+
+def get_permissions(dbconn):
+    results = dbconn.execute_query(queries.get_all_permissions)
+
+    permissions = []
+    for record in results:
+        permissions.append({"id":record[0], "title":record[1].strip()})
+
+    return permissions
+
+
 def get_group(id, dbconn):
     response_dict = {}
 
@@ -202,5 +232,20 @@ def delete_user(user_id, dbconn):
 
     return True
 
+
+def add_permission_to_group(group_id, permission_id, object_label, dbconn):
+    try:
+        dbconn.execute_action_query(queries.add_permission, {"group_id":group_id, "permission_id":permission_id, "object_label":object_label})
+        return True
+    except Exception as e:
+        return False
+
+
+def remove_permission_from_group(group_id, permission_id, dbconn):
+    try:
+        dbconn.execute_action_query(queries.remove_permission, {"group_id": group_id, "permission_id": permission_id})
+        return True
+    except Exception as e:
+        return False
 
 

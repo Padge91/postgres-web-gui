@@ -75,3 +75,12 @@ delete_all_user_members = "delete from cbk_group_members where member_id=%(id)s"
 
 update_password = "update cbk_users set password=%(password), salt=%(salt)s, date_modified=to_timestamp(%(date_modified)s) where id=%(id)s"
 
+get_group_permissions = "select cbk_group_permissions.object_label, cbk_permissions.label from cbk_permissions, cbk_group_permissions where cbk_permissions.id = cbk_group_permissions.permission_id and cbk_group_permissions.group_id=%(id)s"
+
+get_all_permissions = "select id, label from cbk_permissions"
+
+add_permission = "insert into cbk_group_permissions(group_id, object_label, permission_id) values(%(group_id)s, %(object_label)s, %(permission_id)s)"
+
+remove_permission = "delete from cbk_group_permissions where group_id=%(group_id)s and permission_id=%(permission_id)s"
+
+

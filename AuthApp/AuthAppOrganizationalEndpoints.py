@@ -17,6 +17,7 @@ dbconn = Database.Connection.DatabaseConnection(config.database_hostname,
 dbconn.connect()
 
 
+# login
 @app.route("/login", methods=["POST"])
 def login():
     try:
@@ -33,6 +34,7 @@ def login():
         return jsonify(error_response(e))
 
 
+# logout
 @app.route("/logout", methods=["POST"])
 def logout():
     try:
@@ -55,9 +57,17 @@ def logout():
         return jsonify(error_response(e))
 
 
+# request access
+
+
+
+# forgot password
+
+
+# groups
 @app.route("/groups", methods=["GET", "POST"])
 @app.route("/groups/<id>", methods=["POST", "DELETE", "GET", "PUT"])
-def groups_with_id(id=None):
+def groups(id=None):
     try:
         if request.method == "POST":
             if id is None:
@@ -103,9 +113,10 @@ def groups_with_id(id=None):
         return jsonify(error_response(e))
 
 
+# users
 @app.route("/users", methods=["GET", "POST"])
 @app.route("/users/<id>", methods=["GET", "POST", "DELETE", "PUT"])
-def users_with_id(id=None):
+def users(id=None):
     try:
         if request.method == "POST":
             # create a user
@@ -138,5 +149,39 @@ def users_with_id(id=None):
         return jsonify(error_response(e))
 
 
-# permissions now
-
+# permissions
+@app.route("/permissions", methods=["GET"])
+@app.route("/permissions/<id>", methods=["GET", "DELETE", "PUT"])
+def permissions(id=None):
+    try:
+        if request.method == "GET":
+            if id is not None:
+                # get permissions for a group
+                results = AuthApp.get_group_permissions(id, dbconn)
+                return jsonify(success_response(results))
+            else:
+                # get all permissions
+                results = AuthApp.get_permissions(dbconn)
+                return jsonify(success_response(results))
+        elif request.method == "DELETE":
+            # remove permissions from a group
+            if not request.data:
+                raise Exception("Must provide permission Id.")
+            else:
+                required_fields = ["permissionId"]
+                fields = check_required_fields(request, required_fields)
+                results = AuthApp.remove_permission_from_group(id, fields["permissionId"], dbconn)
+                return jsonify(success_response(results))
+        elif request.method == "PUT":
+            # apply permission to group
+            if not request.data:
+                raise Exception("Must provide permission Id.")
+            else:
+                required_fields = ["permissionId", "objectLabel"]
+                fields = check_required_fields(request, required_fields)
+                results = AuthApp.add_permission_to_group(id, fields["permissionId"], fields["objectLabel"], dbconn)
+                return jsonify(success_response(results))
+        else:
+            raise Exception("Something went very, very wrong. You should never see this...")
+    except Exception as e:
+        return jsonify(error_response(e))
