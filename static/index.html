@@ -7,6 +7,15 @@
 	<script type="text/javascript" src="/static/app/login-form/login-form.module.js"></script>
 	<script type="text/javascript" src="/static/app/login-form/login-form.controller.js"></script>
 	<script type="text/javascript" src="/static/app/login-form/login-form.component.js"></script>
+	<script type="text/javascript" src="/static/app/drilldown-list/drilldown-list.module.js"></script>
+	<script type="text/javascript" src="/static/app/drilldown-list/drilldown-list.controller.js"></script>
+	<script type="text/javascript" src="/static/app/drilldown-list/drilldown-list.component.js"></script>
+	<script type="text/javascript" src="/static/app/ribbon/ribbon.module.js"></script>
+	<script type="text/javascript" src="/static/app/ribbon/ribbon.controller.js"></script>
+	<script type="text/javascript" src="/static/app/ribbon/ribbon.component.js"></script>
+	<script type="text/javascript" src="/static/app/record-list/record-list.module.js"></script>
+	<script type="text/javascript" src="/static/app/record-list/record-list.controller.js"></script>
+	<script type="text/javascript" src="/static/app/record-list/record-list.component.js"></script>
     <script type="text/javascript" src="/static/app/app.module.js"></script>
 	<link rel="stylesheet" href="/static/lib/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/static/lib/css/bootstrap.min.css">
@@ -19,31 +28,31 @@
 			<div ng-if="currentState==loginState">
 				<login-form success-callback="loginSuccessCallback" failure-callback="loginFailureCallback"></login-form>
 			</div>
-			<!-- list tables in db -->
-			<div ng-if="currentState==listState">
-
+			<div ng-if="currentState!=loginState">
+				<ribbon></ribbon>
+				<!-- list tables in db -->
+				<div ng-if="currentState==listState">
+					<drilldown-list select-callback="selectCallback" items="tables"></drilldown-list>
+				</div>
+				<!-- show actions for selected table -->
+				<div ng-if="currentState==selectState">
+					<record-list items="currentTableRecords" definition="tableDefinitions[currentTable].columns"></record-list>
+					<!-- list of tables -->
+					<!-- search -->
+					<!-- add a record -->
+					<!-- edit a record -->
+					<!-- delete a record -->
+				</div>
+				<!-- admin panes -->
+				<div ng-if="currentState==adminState">
+					<!-- invite user -->
+					<!-- list users -->
+					<!-- list groups -->
+					<!-- modify group permissions -->
+					<!-- modify user -->
+					<!-- modify group members -->
+				</div>
 			</div>
-			<!-- show actions for selected table -->
-			<div ng-if="currentState==selectState">
-
-			</div>
-			<!-- admin panes -->
-			<div ng-if="currentState==adminState">
-
-			</div>
-
-			<!-- invite user -->
-			<!-- list users -->
-			<!-- list groups -->
-			<!-- modify group permissions -->
-			<!-- modify user -->
-			<!-- modify group members -->
-
-			<!-- list of tables -->
-			<!-- search -->
-			<!-- add a record -->
-			<!-- edit a record -->
-			<!-- delete a record -->
 		</div>
 	</div>
 </body>

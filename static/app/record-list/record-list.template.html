@@ -1,0 +1,13 @@
+<div class="table_container">
+    <input ng-model="searchTerm" type="text" class="search" placeholder="Search"/>
+    <table>
+        <tr class="table_header">
+            <td class="table_cell" ng-repeat="field in $ctrl.definition">{{field.name}}</td>
+        </tr>
+        <tr class="table_row" ng-repeat="item in $ctrl.items | filter:searchTerm">
+            <td class="table_cell" ng-repeat="field in $ctrl.definition">
+                {{item[field.name]}}
+            </td>
+        </tr>
+    </table>
+</div>

@@ -51,3 +51,53 @@
     border: 1px solid #FF4136;
     background-color:pink;
 }
+
+.drilldown_item {
+    width:200px;
+    height:200px;
+    background-color: #efefef;
+    margin:20px;
+    display: inline-block;
+    cursor:pointer;
+}
+
+.drilldown_item:hover {
+    background-color: #dedede;
+}
+
+.ribbon {
+    width:100%;
+    background-color: #efefef;
+}
+
+.thin_ribbon_header {
+    height:30px;
+    background-color: #dedede;
+}
+
+.fat_ribbon_header {
+    height:70px;
+     background-color: #efefef;
+}
+
+.table_container {
+    margin: 20px;
+    overflow-x:scroll;
+    overflow-y:scroll;
+}
+
+.table_header {
+    background-color: #dfdfdf;
+}
+
+.table_row {
+
+}
+
+.table_cell {
+    border: 2px solid white;
+}
+
+.table_row .table_cell {
+    background-color: #efefef;
+}
